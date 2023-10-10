@@ -1,0 +1,7 @@
+{
+    "material-icon-theme.folders.associations": {
+        "core": "rules",
+        "adapter": "pipe",
+        "external": "tools"
+    }
+}

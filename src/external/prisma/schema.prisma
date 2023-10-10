@@ -1,0 +1,42 @@
+datasource db {
+    provider = "postgresql"
+    url = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id Int @id @default(autoincrement())
+    email String @db.VarChar(100) @unique
+    name String @db.VarChar(100)
+    password String @db.VarChar(100)
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    groups Group[]
+}
+
+model Group {
+    id Int @id @default(autoincrement())
+    name String @db.VarChar(100) @unique
+    users User[]
+    accesses GroupAccess[]
+}
+
+model Access {
+    id Int @id @default(autoincrement())
+    path String @unique
+    name String @unique
+    groups GroupAccess[]
+}
+
+model GroupAccess {
+    id Int @id @default(autoincrement())
+    groupId Int
+    group Group @relation(fields: [groupId], references: [id])
+    accessId Int
+    access Access @relation(fields: [accessId], references: [id])
+    allowed Boolean
+    @@unique([groupId, accessId])
+}
